@@ -31,4 +31,15 @@ contract ifElse {
       return 2;
     }
   }
+
+  function tenary(uint _x) public pure returns (uint) {
+    /* if(_x < 20) {
+      return 1;
+    } 
+    return 2;
+    */ 
+
+    // shorthand way of writing ^^
+    return _x < 20 ? 1 : 2;
+  }
 }
