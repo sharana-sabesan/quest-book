@@ -148,6 +148,7 @@ contract functions() {
   }
 
   /* LIMITATION OF FUNCTION:
-   * Mappings can not be used as input or outputs to a function??
+   * Mappings can not be used as input or outputs     * to a function. You cannot return like this: 
+   * "return MyMap[]"
    */
 }
