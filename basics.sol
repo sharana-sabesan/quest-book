@@ -116,3 +116,38 @@ contract Arrays() {
   }
 }
 
+
+contract functions() {
+  // solidity can return multiple values
+  function returnMany() public pure returns (uint, bool, uint) {
+    return(1, true, 2);
+  }
+
+  // you can name return values
+  function named() public pure returns(uint x, bool b, uint y) {
+    return(1, true, 2)
+  }
+
+  // function returns values, with return statement
+  // just assigning is enough
+  function assigned() public pure returns (uint x, bool b, uint y) {
+    x = 1; 
+    b = true;
+    y = 2;
+  }
+
+  // function uses values from other functions
+  function destructingAssignments() public pure returns(uint, bool, uint, uint, uint){
+
+    // assigns to return values from returnMany function
+    (uint i, bool b, uint j) = returnMany();
+
+    // Values can be left out
+    (uint x, , uint y) = (4, 5, 6); 
+    return(i,b, j, x, y)
+  }
+
+  /* LIMITATION OF FUNCTION:
+   * Mappings can not be used as input or outputs to a function??
+   */
+}
