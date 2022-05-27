@@ -5,7 +5,7 @@ contract HelloWorld {
   string public greet = "Hello World!";
 }
 
-contract stateVariables {
+contract StateVariables {
   uint public num; 
 
   // every function call counts as a transaction
@@ -20,7 +20,7 @@ contract stateVariables {
   }
 }
 
-contract ifElse {
+contract IfElse {
   // pure = a function that doesn't read or modify the variables of the state
   function foo(uint x) public pure returns (uint) {
     if(x < 10){
@@ -32,7 +32,7 @@ contract ifElse {
     }
   }
 
-  function tenary(uint _x) public pure returns (uint) {
+  function enary(uint _x) public pure returns (uint) {
     /* if(_x < 20) {
       return 1;
     } 
@@ -45,7 +45,6 @@ contract ifElse {
 }
 
 contract map() {
-
   // this function helps us get the value, using key
   function get_address(address _addr) public view returns (uint){
     return MyMap[_addr]
@@ -68,4 +67,52 @@ contract map() {
   }
 }
 
+contract Arrays() {
+  uint[] public arr //declared
+  uint[] public arr2 = [1, 2, 3] // initialized
+  uint[10] public myFixedSizeArr; //fixed size array
+
+  // function gets an element from an array
+  function get(uint i) public view returns(uint) {
+    return arr[i];
+  }
+
+  // function adds 1 element to an array
+  function push(uint i) public {
+    arr.push(i)
+  }
+
+  // function removes 1 element from array
+  function pop() public {
+    arr.pop();
+  }
+
+  // function removes specific element from array
+  function remove(uint index) public {
+    delete arr[index];
+  }
+
+  // functions gets array length
+  function getLength() public view returns (uint) {
+    return arr.length
+  }
+
+  // function returns entire array, but not arrays indefinitely grow in length
+  function getArr public view returns (uint[] memory) {
+    /* memory is a keyword used to store data for the   
+     * execution of a contract. It holds functions 
+     * argument data and is wiped after execution
+    */
+    return arr;
+  }
+
+  // function that deletes element without creating gap in array
+  function removeCompact(uint index) public {
+    // Move the last element into the place to delete
+    arr[index] = arr[arr.length - 1];
+
+    // Remove the last element
+    arr.pop();
+  }
+}
 
