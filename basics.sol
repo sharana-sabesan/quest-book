@@ -43,3 +43,29 @@ contract ifElse {
     return _x < 20 ? 1 : 2;
   }
 }
+
+contract map() {
+
+  // this function helps us get the value, using key
+  function get_address(address _addr) public view returns (uint){
+    return MyMap[_addr]
+    /* mapping(keyType -> valueType)
+     * key can be uint, address, or bytes
+     * value can be any type including
+     *   - another mapping
+     *   - array
+     */
+  }
+
+  // this function helps us set the value to the key
+  function set(address _addr, uint _i) public {
+    myMap[_addr] = _i;
+  }
+
+  // this function resets/deletes the value linked to key value
+  function remove(address _addr) public {
+    delete myMap[_addr];
+  }
+}
+
+
