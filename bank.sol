@@ -23,13 +23,43 @@ contract SmartBankAccount {
     mapping(address => uint) balances;
     // using an address, you can find balance of the address/account
 
-    function addBalance(address userAddress, uint amount) public payable {
-        balances[userAddress] = amount;
-        // sets user address/account to have a certain 
-        // amount of money in the user's account
+    mapping(address => uint) depositTimestamps;
+    // to find out when a deposit was made
 
-        totalContractBalance = totalContractBalance + amount;
+    function addBalance() public payable {
+            // "payable" allows money to be sent as a parameter when function is called
+
+        balances[msg.sender] = msg.value;
+        /* Sets user address/account to have a certain 
+         * amount of money in the user's account.
+         * Use mapping to store what is the balance of 
+         * which user!
+         */
+
+        /* msg.sender is automatic value which stores address
+         * of user who clled the function. msg.value is $$$ 
+         * being sent in the function call.
+         */
+
+        totalContractBalance = totalContractBalance + msg.value;
         // adds user's balance to total contract balance
+
+        depositTimestamps[msg.sender] = block.timestamp;
+        // gives us the time a user made a deposit
+    }
+
+    function getBalance(address userAddress) public view returns(uint) {
+        uint principal = balances[userAddress];
+        // principal = balance of a specified user
+
+        uint timeElapsed = block.timestamp - depositTimestamps[userAddress];
+        /* timeElapsed = how much time has passed since the 
+         * user put money in the account.
+         */
+
+        return principal + uint((principal * 7 * timeElapsed)/ (100 * 365 * 24 * 60 * 60)) + 1;
+        // interest of the user's money based on how long it was kept in the bank
+        // 0.07% a year
     }
         
 }
