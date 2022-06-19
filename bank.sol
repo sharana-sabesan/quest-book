@@ -57,9 +57,47 @@ contract SmartBankAccount {
          * user put money in the account.
          */
 
+        // balances[userAddress] += (uint((principal * 7 * timeElapsed)/ (100 * 365 * 24 * 60 * 60)) + 1);
+        // adds interest to user account
+
         return principal + uint((principal * 7 * timeElapsed)/ (100 * 365 * 24 * 60 * 60)) + 1;
-        // interest of the user's money based on how long it was kept in the bank
-        // 0.07% a year
+        /* interest of the user's money based on how long it was kept in the bank
+         * 0.07% a year
+         * even if you have kept the money for 0 seconds inside the bank, 
+         * you still get 1 eth no matter what, because of the
+         * "+ 1" at the end of the return statement. 
+         */
+    }
+
+    function withdraw() public payable {
+        address payable withdrawTo = payable(msg.sender);
+        /* Converts the address you are withdrawing to...into
+         * a payable address. There are 2 types of addresses
+         * in Solidity: "address payable" & just "address". 
+         * Address payable can transfer, send and accept Ether. 
+         */
+
+        uint amountToTransfer = getBalance(msg.sender);
+        /* Gets the amount the person who called the function
+         * (aka the withdrawer) wants to withdraw from their account.
+         */
+
+        withdrawTo.transfer(amountToTransfer);
+        // Payable addresses allow us to use functions like "tranfer"
+
+        totalContractBalance = totalContractBalance - amountToTransfer;
+        /* Updates total contract balance by subtracting what is being
+         * withdrawn from a user account which is in the total contract.
+         */
+
+        balances[msg.sender] = 0;
+        /* Since the sender has withdrawn all their money, their account is
+         * updated to have no $$$ in it. 
+         */
+    }
+
+    function addMoneyToContract() public payable {
+        totalContractBalance = totalContractBalance + msg.value; 
     }
         
 }
