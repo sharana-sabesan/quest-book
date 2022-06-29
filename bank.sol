@@ -26,7 +26,7 @@ contract SmartBankAccount {
     mapping(address => uint) depositTimestamps;
     // to find out when a deposit was made
 
-    function addBalance() public payable {
+    function addBalance() public payable returns(uint) {
             // "payable" allows money to be sent as a parameter when function is called
 
         balances[msg.sender] = msg.value;
@@ -46,9 +46,10 @@ contract SmartBankAccount {
 
         depositTimestamps[msg.sender] = block.timestamp;
         // gives us the time a user made a deposit
+        return msg.value; 
     }
 
-    function getBalance(address userAddress) public view returns(uint) {
+    function getBalance(address userAddress) public payable returns(uint) {
         uint principal = balances[userAddress];
         // principal = balance of a specified user
 
@@ -57,7 +58,7 @@ contract SmartBankAccount {
          * user put money in the account.
          */
 
-        // balances[userAddress] += (uint((principal * 7 * timeElapsed)/ (100 * 365 * 24 * 60 * 60)) + 1);
+        balances[userAddress] += (uint((principal * 7 * timeElapsed)/ (100 * 365 * 24 * 60 * 60)) + 1);
         // adds interest to user account
 
         return principal + uint((principal * 7 * timeElapsed)/ (100 * 365 * 24 * 60 * 60)) + 1;
@@ -69,7 +70,7 @@ contract SmartBankAccount {
          */
     }
 
-    function withdraw() public payable {
+    function withdraw(address transferAddress) public payable {
         address payable withdrawTo = payable(msg.sender);
         /* Converts the address you are withdrawing to...into
          * a payable address. There are 2 types of addresses
@@ -83,7 +84,7 @@ contract SmartBankAccount {
          */
 
         withdrawTo.transfer(amountToTransfer);
-        // Payable addresses allow us to use functions like "tranfer"
+        // Payable addresses allow us to use functions like "transfer"
 
         totalContractBalance = totalContractBalance - amountToTransfer;
         /* Updates total contract balance by subtracting what is being
@@ -96,8 +97,9 @@ contract SmartBankAccount {
          */
     }
 
-    function addMoneyToContract() public payable {
-        totalContractBalance = totalContractBalance + msg.value; 
+    function addMoneyToContract(address userAddress) public payable {
+        totalContractBalance = totalContractBalance + balances[userAddress]; 
+        // user's balance with interest is added to total contract's balance
     }
         
 }
